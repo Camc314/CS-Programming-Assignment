@@ -28,3 +28,13 @@ class BoardUtils:
     def getPixelCoordFromSquare(self, squareNumber: int) -> (int, int):
         """Returns the coordinate of the square in pixels given a starting square"""
         return self.getPixelCoordinates(self.getCoordinates(squareNumber))
+
+
+diceDict = {
+    1: "./images/dice1.gif",
+    2: "./images/dice2.gif",
+    3: "./images/dice3.gif",
+    4: "./images/dice4.gif",
+    5: "./images/dice5.gif",
+    6: "./images/dice6.gif",
+}

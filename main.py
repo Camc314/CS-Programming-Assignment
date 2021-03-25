@@ -1,5 +1,5 @@
 from turtle import Screen, Turtle
-from utils import BoardUtils
+from utils import BoardUtils, diceDict
 
 
 class SnakesLadderGame:
@@ -17,6 +17,7 @@ class SnakesLadderGame:
 
         self.initGrid()
         self.numberGrid()
+        self.initDice()
 
     def initGrid(self):
         """Create a grid"""
@@ -56,6 +57,17 @@ class SnakesLadderGame:
 
             numberTurtle.goto(x + 10, y - 20)
             numberTurtle.write(str(i + 1))
+
+    def initDice(self):
+        """Initializes the turtle containing the dice"""
+
+        for i in diceDict:
+            self.screen.addshape(diceDict[i])
+
+        self.dice = Turtle()
+        self.dice.penup()
+        self.dice.goto(-50, 200)
+        self.dice.shape(diceDict[1])
 
 
 SnakesLadderGame()
