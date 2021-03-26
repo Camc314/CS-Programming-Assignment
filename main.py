@@ -1,4 +1,5 @@
 from turtle import Screen, Turtle
+from utils import BoardUtils
 
 
 class SnakesLadderGame:
@@ -8,7 +9,14 @@ class SnakesLadderGame:
         self.gridHeight = 375
         self.gridWidth = 375
 
+        self.maxScore = self.numCols * self.numRows
+
+        self.utils = BoardUtils(
+            self.numCols, self.numRows, self.gridWidth, self.gridHeight
+        )
+
         self.initGrid()
+        self.numberGrid()
 
     def initGrid(self):
         """Create a grid"""
@@ -34,6 +42,20 @@ class SnakesLadderGame:
             turtle.pendown()
             turtle.goto(
                 [(i * (self.gridWidth / self.numRows)), self.gridHeight])
+
+    def numberGrid(self):
+        """Labels numbers for all squares on the grid"""
+        numberTurtle = Turtle()
+        numberTurtle.hideturtle()
+        numberTurtle.up()
+
+        for i in range(self.maxScore):
+            x, y = self.utils.getCoordinates(i + 1)
+            y = y + 1
+            x, y = self.utils.getPixelCoordinates([x, y])
+
+            numberTurtle.goto(x + 10, y - 20)
+            numberTurtle.write(str(i + 1))
 
 
 SnakesLadderGame()
