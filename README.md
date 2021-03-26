@@ -4,11 +4,18 @@ This project is writen in [Python](https://www.python.org/) and uses the [Turtle
 
 ## Getting started
 
-To run the program:
+1. Clone or download this repository.
 
-```
-$ python3 main.py
-```
+   ```sh
+   $ git clone https://github.com/Camc314/cs-programming-assignment
+   $ cd cs-programming-assignment
+   ```
+
+2. Run the program.
+
+   ```sh
+   $ python3 main.py
+   ```
 
 ## Requirements
 
