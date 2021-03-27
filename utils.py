@@ -1,3 +1,6 @@
+from random import randint
+
+
 class BoardUtils:
     def __init__(self, numCols: int, numRows: int, gridWidth: int, gridHeight: int):
         self.numCols = numCols
@@ -38,3 +41,13 @@ diceDict = {
     5: "./images/dice5.gif",
     6: "./images/dice6.gif",
 }
+
+
+def rollDie() -> int:
+    """Mimicks rolling a 6 sided die (returns an int between 1 and 6 (inclusive))
+
+    Example:
+    >>> rollDie()
+    4
+    """
+    return randint(1, 6)

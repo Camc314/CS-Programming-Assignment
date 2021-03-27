@@ -1,5 +1,6 @@
 from turtle import Screen, Turtle
-from utils import BoardUtils, diceDict
+from utils import BoardUtils, diceDict, rollDie
+from time import sleep
 
 
 class SnakesLadderGame:
@@ -68,6 +69,12 @@ class SnakesLadderGame:
         self.dice.penup()
         self.dice.goto(-50, 200)
         self.dice.shape(diceDict[1])
+
+    def animateDiceRoll(self):
+        """Outputs 6 random dice images to the screen to mimic rolling a die"""
+        for i in range(6):
+            self.dice.shape(diceDict[rollDie()])
+            sleep(0.05)
 
 
 SnakesLadderGame()
