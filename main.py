@@ -18,6 +18,7 @@ class SnakesLadderGame:
 
         self.initGrid()
         self.numberGrid()
+        self.initPlayers()
         self.initDice()
 
     def initGrid(self):
@@ -58,6 +59,19 @@ class SnakesLadderGame:
 
             numberTurtle.goto(x + 10, y - 20)
             numberTurtle.write(str(i + 1))
+
+    def initPlayers(self):
+        """Creates turtles for the bull/cow and places them on the screen"""
+        self.screen.addshape("./images/bull.gif")
+        self.screen.addshape("./images/cow.gif")
+
+        self.bull = Turtle()
+        self.bull.goto([15, 15])
+        self.bull.shape("./images/bull.gif")
+
+        self.cow = Turtle()
+        self.cow.goto([45, 15])
+        self.cow.shape("./images/cow.gif")
 
     def initDice(self):
         """Initializes the turtle containing the dice"""
