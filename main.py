@@ -19,6 +19,7 @@ class SnakesLadderGame:
         self.initGrid()
         self.numberGrid()
         self.initPlayers()
+        self.initWinTurtle()
         self.initDice()
 
     def initGrid(self):
@@ -83,6 +84,15 @@ class SnakesLadderGame:
         self.dice.penup()
         self.dice.goto(-50, 200)
         self.dice.shape(diceDict[1])
+
+    def initWinTurtle(self):
+        """Initializes the turtle containing the win gif"""
+        self.screen.addshape("./images/win.gif")
+        self.winTurtle = Turtle()
+        self.winTurtle.up()
+        self.winTurtle.hideturtle()
+        self.winTurtle.goto(150, 150)
+        self.winTurtle.shape("./images/win.gif")
 
     def animateDiceRoll(self):
         """Outputs 6 random dice images to the screen to mimic rolling a die"""
