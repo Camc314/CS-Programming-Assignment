@@ -4,7 +4,9 @@ from time import sleep
 
 
 class SnakesLadderGame:
-    def __init__(self, numCols: int, numRows: int):
+    def __init__(self, numCols: int, numRows: int, difficulty="medium"):
+        self.difficulty = difficulty
+
         self.numCols = numCols
         self.numRows = numRows
         self.gridHeight = 375
@@ -110,4 +112,7 @@ if differentSize.lower() == "yes":
     gridCols = int(input("How many columns do you want? "))
     gridRows = int(input("How many rows do you want? "))
 
-SnakesLadderGame(gridCols, gridRows)
+print("Select your difficulty (easy, medium, difficult or impossible)")
+difficulty = input("")
+
+a = SnakesLadderGame(gridCols, gridRows, difficulty)
