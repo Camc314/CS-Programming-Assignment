@@ -18,6 +18,10 @@ class SnakesLadderGame:
             self.numCols, self.numRows, self.gridWidth, self.gridHeight
         )
 
+        self.currentTurn = "bull"
+        self.bullScore = 1
+        self.cowScore = 1
+
         self.initGrid()
         self.numberGrid()
         self.initPlayers()
@@ -102,6 +106,84 @@ class SnakesLadderGame:
             self.dice.shape(diceDict[rollDie()])
             sleep(0.05)
 
+    def updateDiceTurtle(self, newDiceRoll: int):
+        """Updates the current image of the dice"""
+        self.dice.shape(diceDict[newDiceRoll])
+
+    def getCurrentPlayer(self) -> Turtle:
+        """Returns the Turtle of the current player"""
+        if self.currentTurn == "bull":
+            return self.bull
+        return self.cow
+
+    def getCurrentPlayerPosition(self) -> int:
+        if self.currentTurn == "bull":
+            return self.bullScore
+        return self.cowScore
+
+    def setCurrentPlayerPosition(self, newScore: int):
+        """Sets the score of the current player"""
+        if self.currentTurn == "bull":
+            self.bullScore = newScore
+        else:
+            self.cowScore = newScore
+
+    def moveCurrentPlayer(self, fromSquare: int, toSquare: int):
+        """Moves a player sequentally from square to square"""
+        playerToMove = self.getCurrentPlayer()
+
+        for i in range(toSquare - fromSquare):
+            x, y = self.utils.getPixelCoordFromSquare(fromSquare + i+1)
+            if self.currentTurn == "bull":
+                x = x + 15
+            else:
+                x = x + 45
+            playerToMove.goto(x, y + 15)
+
+    def rollDice(self):
+        userInput = input(self.currentTurn.capitalize() +
+                          "'s turn. Press enter to roll the dice ")
+        if userInput == 'exit' or userInput == 'quit':
+            return 'game-quit'
+
+        self.animateDiceRoll()
+
+        diceRollScore = rollDie()
+
+        self.updateDiceTurtle(diceRollScore)
+
+        print(self.currentTurn.capitalize(), "rolled a", diceRollScore)
+
+        newPosition = diceRollScore + self.getCurrentPlayerPosition()
+
+        if newPosition > self.maxScore:
+            print(
+                self.currentTurn, "must roll a "
+                + str(self.maxScore - self.getCurrentPlayerPosition())
+                + " to finish"
+            )
+        else:
+            print(self.currentTurn.capitalize(), "moved from",
+                  self.getCurrentPlayerPosition(), "to", newPosition)
+
+            self.moveCurrentPlayer(
+                self.getCurrentPlayerPosition(), newPosition)
+            self.setCurrentPlayerPosition(newPosition)
+            # Check for snake or ladder
+
+            if self.getCurrentPlayerPosition() == self.maxScore:
+                print(self.currentTurn.capitalize(), "Won!")
+                self.winTurtle.showturtle()
+                return "game-complete"
+
+        self.updateCurrentPlayer()
+        print("")
+
+    def updateCurrentPlayer(self):
+        if self.currentTurn == "bull":
+            self.currentTurn = "cow"
+        else:
+            self.currentTurn = "bull"
 
 print("This game has been designed for a 5x5 grid, but different sized grids should work.")
 differentSize = input("Do you want a different sized grid? ")
@@ -116,3 +198,12 @@ print("Select your difficulty (easy, medium, difficult or impossible)")
 difficulty = input("")
 
 a = SnakesLadderGame(gridCols, gridRows, difficulty)
+
+while True:
+    res = a.rollDice()
+    if res == 'game-quit':
+        break
+    elif res == "game-complete":
+        playAgain = input("Play again?")
+        if playAgain.lower() == "no":
+            break
