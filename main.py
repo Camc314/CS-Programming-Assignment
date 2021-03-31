@@ -102,6 +102,10 @@ class SnakesLadderGame:
             self.dice.shape(diceDict[rollDie()])
             sleep(0.05)
 
+    def updateDiceTurtle(self, newDiceRoll: int):
+        """Updates the current image of the dice"""
+        self.dice.shape(diceDict[newDiceRoll])
+
 
 print("This game has been designed for a 5x5 grid, but different sized grids should work.")
 differentSize = input("Do you want a different sized grid? ")
