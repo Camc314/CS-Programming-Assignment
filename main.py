@@ -106,6 +106,17 @@ class SnakesLadderGame:
         """Updates the current image of the dice"""
         self.dice.shape(diceDict[newDiceRoll])
 
+    def getCurrentPlayer(self) -> Turtle:
+        """Returns the Turtle of the current player"""
+        if self.currentTurn == "bull":
+            return self.bull
+        return self.cow
+
+    def getCurrentPlayerPosition(self) -> int:
+        if self.currentTurn == "bull":
+            return self.bullScore
+        return self.cowScore
+
 
 print("This game has been designed for a 5x5 grid, but different sized grids should work.")
 differentSize = input("Do you want a different sized grid? ")
