@@ -124,6 +124,12 @@ class SnakesLadderGame:
         else:
             self.cowScore = newScore
 
+    def updateCurrentPlayer(self):
+        if self.currentTurn == "bull":
+            self.currentTurn = "cow"
+        else:
+            self.currentTurn = "bull"
+
 print("This game has been designed for a 5x5 grid, but different sized grids should work.")
 differentSize = input("Do you want a different sized grid? ")
 
