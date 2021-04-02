@@ -18,6 +18,10 @@ class SnakesLadderGame:
             self.numCols, self.numRows, self.gridWidth, self.gridHeight
         )
 
+        self.currentTurn = "bull"
+        self.bullScore = 1
+        self.cowScore = 1
+
         self.initGrid()
         self.numberGrid()
         self.initPlayers()
@@ -136,6 +140,45 @@ class SnakesLadderGame:
                 x = x + 45
             playerToMove.goto(x, y + 15)
 
+    def rollDice(self):
+        userInput = input(self.currentTurn.capitalize() +
+                          "'s turn. Press enter to roll the dice ")
+        if userInput == 'exit' or userInput == 'quit':
+            return 'game-quit'
+
+        self.animateDiceRoll()
+
+        diceRollScore = rollDie()
+
+        self.updateDiceTurtle(diceRollScore)
+
+        print(self.currentTurn.capitalize(), "rolled a", diceRollScore)
+
+        newPosition = diceRollScore + self.getCurrentPlayerPosition()
+
+        if newPosition > self.maxScore:
+            print(
+                self.currentTurn, "must roll a "
+                + str(self.maxScore - self.getCurrentPlayerPosition())
+                + " to finish"
+            )
+        else:
+            print(self.currentTurn.capitalize(), "moved from",
+                  self.getCurrentPlayerPosition(), "to", newPosition)
+
+            self.moveCurrentPlayer(
+                self.getCurrentPlayerPosition(), newPosition)
+            self.setCurrentPlayerPosition(newPosition)
+            # Check for snake or ladder
+
+            if self.getCurrentPlayerPosition() == self.maxScore:
+                print(self.currentTurn.capitalize(), "Won!")
+                self.winTurtle.showturtle()
+                return "game-complete"
+
+        self.updateCurrentPlayer()
+        print("")
+
     def updateCurrentPlayer(self):
         if self.currentTurn == "bull":
             self.currentTurn = "cow"
@@ -155,3 +198,12 @@ print("Select your difficulty (easy, medium, difficult or impossible)")
 difficulty = input("")
 
 a = SnakesLadderGame(gridCols, gridRows, difficulty)
+
+while True:
+    res = a.rollDice()
+    if res == 'game-quit':
+        break
+    elif res == "game-complete":
+        playAgain = input("Play again?")
+        if playAgain.lower() == "no":
+            break
