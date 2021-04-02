@@ -51,7 +51,7 @@ class SnakesLadderGame:
             turtle.goto([(i * (self.gridWidth / self.numCols)), 0])
             turtle.pendown()
             turtle.goto(
-                [(i * (self.gridWidth / self.numRows)), self.gridHeight])
+                [(i * (self.gridWidth / self.numCols)), self.gridHeight])
 
     def numberGrid(self):
         """Labels numbers for all squares on the grid"""
@@ -185,7 +185,25 @@ class SnakesLadderGame:
         else:
             self.currentTurn = "bull"
 
-print("This game has been designed for a 5x5 grid, but different sized grids should work.")
+    def resetGame(self):
+        self.bullScore = 1
+        self.cowScore = 1
+
+        self.cow.goto(15, 15)
+        self.bull.goto(15, 45)
+
+        self.cow.clear()
+        self.bull.clear()
+
+        self.winTurtle.hideturtle()
+
+        self.currentTurn = "bull"
+
+
+print(
+    "This game has been designed for a 5x5 grid, but different sized grids should work."
+)
+
 differentSize = input("Do you want a different sized grid? ")
 
 gridCols, gridRows = 5, 5
@@ -207,3 +225,5 @@ while True:
         playAgain = input("Play again?")
         if playAgain.lower() == "no":
             break
+        else:
+            a.resetGame()
