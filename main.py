@@ -124,6 +124,18 @@ class SnakesLadderGame:
         else:
             self.cowScore = newScore
 
+    def moveCurrentPlayer(self, fromSquare: int, toSquare: int):
+        """Moves a player sequentally from square to square"""
+        playerToMove = self.getCurrentPlayer()
+
+        for i in range(toSquare - fromSquare):
+            x, y = self.utils.getPixelCoordFromSquare(fromSquare + i+1)
+            if self.currentTurn == "bull":
+                x = x + 15
+            else:
+                x = x + 45
+            playerToMove.goto(x, y + 15)
+
     def updateCurrentPlayer(self):
         if self.currentTurn == "bull":
             self.currentTurn = "cow"
