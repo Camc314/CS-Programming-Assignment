@@ -147,6 +147,18 @@ class SnakesLadderGame:
                 x = x + 45
             playerToMove.goto(x, y + 15)
 
+    def moveCurrentPlayerDirect(self, toSquare: int):
+        """Moves the current player directly from their current square to the new square"""
+        playerToMove = self.getCurrentPlayer()
+
+        x, y = self.utils.getPixelCoordFromSquare(toSquare)
+        if self.currentTurn == "bull":
+            x = x + 15
+        else:
+            x = x + 45
+
+        playerToMove.goto(x, y + 15)
+
     def rollDice(self):
         userInput = input(self.currentTurn.capitalize() +
                           "'s turn. Press enter to roll the dice ")
