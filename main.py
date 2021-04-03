@@ -4,8 +4,9 @@ from time import sleep
 
 
 class SnakesLadderGame:
-    def __init__(self, numCols: int, numRows: int, difficulty="medium"):
+    def __init__(self, numCols: int, numRows: int, difficulty: str, darkMode: bool):
         self.difficulty = difficulty
+        self.darkMode = darkMode
 
         self.numCols = numCols
         self.numRows = numRows
@@ -32,9 +33,12 @@ class SnakesLadderGame:
         """Create a grid"""
         self.screen = Screen()
         self.screen.setworldcoordinates(-100, -100, 400, 400)
-
         turtle = Turtle()
         turtle.speed(10)
+
+        if self.darkMode:
+            self.screen.bgcolor("black")
+            turtle.color("white")
 
         turtle.hideturtle()
         for i in range(self.numRows + 1):
@@ -58,6 +62,9 @@ class SnakesLadderGame:
         numberTurtle = Turtle()
         numberTurtle.hideturtle()
         numberTurtle.up()
+
+        if self.darkMode:
+            numberTurtle.color("white")
 
         for i in range(self.maxScore):
             x, y = self.utils.getCoordinates(i + 1)
@@ -215,10 +222,17 @@ if differentSize.lower() == "yes":
 print("Select your difficulty (easy, medium, difficult or impossible)")
 difficulty = input("")
 
-a = SnakesLadderGame(gridCols, gridRows, difficulty)
+print("Do you want to play in dark mode?")
+darkMode = input("")
+if darkMode.lower() == 'yes':
+    darkMode = True
+else:
+    darkMode = False
+
+game = SnakesLadderGame(gridCols, gridRows, difficulty, darkMode)
 
 while True:
-    res = a.rollDice()
+    res = game.rollDice()
     if res == 'game-quit':
         break
     elif res == "game-complete":
@@ -226,4 +240,4 @@ while True:
         if playAgain.lower() == "no":
             break
         else:
-            a.resetGame()
+            game.resetGame()
