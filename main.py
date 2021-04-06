@@ -1,6 +1,7 @@
 from turtle import Screen, Turtle
-from utils import BoardUtils, diceDict, rollDie
+from utils import BoardUtils, diceDict, rollDie, ladderDict, getMidpoint, snakeDict
 from time import sleep
+from random import randint
 
 
 class SnakesLadderGame:
@@ -26,6 +27,7 @@ class SnakesLadderGame:
         self.initGrid()
         self.numberGrid()
         self.initPlayers()
+        self.initSnakeLadder()
         self.initWinTurtle()
         self.initDice()
 
@@ -80,12 +82,61 @@ class SnakesLadderGame:
         self.screen.addshape("./images/cow.gif")
 
         self.bull = Turtle()
+        self.cow = Turtle()
         self.bull.goto([15, 15])
         self.bull.shape("./images/bull.gif")
 
-        self.cow = Turtle()
         self.cow.goto([45, 15])
         self.cow.shape("./images/cow.gif")
+
+    def initSnakeLadder(self):
+        """"""
+
+        self.screen.addshape("./images/ladder.gif")
+        self.screen.addshape("./images/ladder3.gif")
+        self.screen.addshape("./images/snake.gif")
+        self.screen.addshape("./images/snake2.gif")
+        self.screen.addshape("./images/snake3.gif")
+
+        snakeLadderTurtle = Turtle()
+
+        snakeArray = []
+        ladderArray = []
+
+        for i in range(self.numCols):
+            # to change difficulty change this probability
+            isSnake = randint(1, 2) == 2
+
+            if len(ladderArray) > 2 * len(snakeArray):
+                isSnake = True
+            elif len(snakeArray) > 2 * len(ladderArray):
+                isSnake = False
+
+            if isSnake:
+                height = randint(1, 3)
+                x1, y1 = i,  randint(height, self.numRows - 1)
+                x2, y2 = i,  y1 - height
+                snakeArray.append([self.utils.getPointFromCoordinates(
+                    [x1, y1]), self.utils.getPointFromCoordinates([x2, y2])])
+            else:
+                height = randint(1, 2)
+                x1, y1 = i,  randint(0, self.numRows - 1 - height)
+                x2, y2 = i,  y1 + height
+                ladderArray.append([self.utils.getPointFromCoordinates(
+                    [x1, y1]), self.utils.getPointFromCoordinates([x2, y2])])
+
+            if isSnake:
+                snakeLadderTurtle.shape(snakeDict[abs(y2 - y1)])
+            else:
+                snakeLadderTurtle.shape(ladderDict[abs(y2 - y1)])
+
+            snakeLadderTurtle.goto(self.utils.cellMidpoint(
+                self.utils.getPixelCoordinates(
+                    getMidpoint([x1, y1], [x2, y2]))))
+            snakeLadderTurtle.stamp()
+
+            self.snakeArray = snakeArray
+            self.ladderArray = ladderArray
 
     def initDice(self):
         """Initializes the turtle containing the dice"""
@@ -140,18 +191,31 @@ class SnakesLadderGame:
         playerToMove = self.getCurrentPlayer()
 
         for i in range(toSquare - fromSquare):
-            x, y = self.utils.getPixelCoordFromSquare(fromSquare + i+1)
+            x, y = self.utils.getPixelCoordFromSquare(fromSquare + i + 1)
             if self.currentTurn == "bull":
                 x = x + 15
             else:
                 x = x + 45
             playerToMove.goto(x, y + 15)
 
+    def moveCurrentPlayerDirect(self, toSquare: int):
+        """Moves the current player directly from their current square to the new square"""
+        playerToMove = self.getCurrentPlayer()
+
+        x, y = self.utils.getPixelCoordFromSquare(toSquare)
+        if self.currentTurn == "bull":
+            x = x + 15
+        else:
+            x = x + 45
+
+        playerToMove.goto(x, y + 15)
+
     def rollDice(self):
-        userInput = input(self.currentTurn.capitalize() +
-                          "'s turn. Press enter to roll the dice ")
-        if userInput == 'exit' or userInput == 'quit':
-            return 'game-quit'
+        userInput = input(
+            self.currentTurn.capitalize() + "'s turn. Press enter to roll the dice "
+        )
+        if userInput == "exit" or userInput == "quit":
+            return "game-quit"
 
         self.animateDiceRoll()
 
@@ -165,18 +229,26 @@ class SnakesLadderGame:
 
         if newPosition > self.maxScore:
             print(
-                self.currentTurn, "must roll a "
+                self.currentTurn,
+                "must roll a "
                 + str(self.maxScore - self.getCurrentPlayerPosition())
-                + " to finish"
+                + " to finish",
             )
         else:
-            print(self.currentTurn.capitalize(), "moved from",
-                  self.getCurrentPlayerPosition(), "to", newPosition)
+            print(
+                self.currentTurn.capitalize(),
+                "moved from",
+                self.getCurrentPlayerPosition(),
+                "to",
+                newPosition,
+            )
 
             self.moveCurrentPlayer(
                 self.getCurrentPlayerPosition(), newPosition)
             self.setCurrentPlayerPosition(newPosition)
             # Check for snake or ladder
+            self.checkForLadder()
+            self.checkForSnake()
 
             if self.getCurrentPlayerPosition() == self.maxScore:
                 print(self.currentTurn.capitalize(), "Won!")
@@ -185,6 +257,30 @@ class SnakesLadderGame:
 
         self.updateCurrentPlayer()
         print("")
+
+    def checkForSnake(self):
+        """Checks if the square the current player landed on contains
+        the start of a snake
+        """
+        for x in self.snakeArray:
+            if x[0] == self.getCurrentPlayerPosition():
+                self.moveCurrentPlayerDirect(x[1])
+                self.setCurrentPlayerPosition(x[1])
+                print("Unlucky!,", self.currentTurn, "moved from",
+                      str(x[0]), "to", str(x[1]))
+                break
+
+    def checkForLadder(self):
+        """Checks if the square the current player landed on contains
+        the start of a snake
+        """
+        for x in self.ladderArray:
+            if x[0] == self.getCurrentPlayerPosition():
+                self.moveCurrentPlayerDirect(x[1])
+                self.setCurrentPlayerPosition(x[1])
+                print("Lucky!,", self.currentTurn, "moved from",
+                      str(x[0]), "to", str(x[1]))
+                break
 
     def updateCurrentPlayer(self):
         if self.currentTurn == "bull":
@@ -224,7 +320,7 @@ difficulty = input("")
 
 print("Do you want to play in dark mode?")
 darkMode = input("")
-if darkMode.lower() == 'yes':
+if darkMode.lower() == "yes":
     darkMode = True
 else:
     darkMode = False
@@ -233,7 +329,7 @@ game = SnakesLadderGame(gridCols, gridRows, difficulty, darkMode)
 
 while True:
     res = game.rollDice()
-    if res == 'game-quit':
+    if res == "game-quit":
         break
     elif res == "game-complete":
         playAgain = input("Play again?")
