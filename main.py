@@ -2,12 +2,18 @@ from turtle import Screen, Turtle
 from utils import BoardUtils, diceDict, rollDie, ladderDict, getMidpoint, snakeDict
 from time import sleep
 from random import randint
+from sys import argv
 
 
 class SnakesLadderGame:
     def __init__(self, numCols: int, numRows: int, difficulty: str, darkMode: bool):
         self.difficulty = difficulty
         self.darkMode = darkMode
+
+        if "--debug" in argv:
+            self.debug = True
+        else:
+            self.debug = False
 
         self.numCols = numCols
         self.numRows = numRows
@@ -83,6 +89,11 @@ class SnakesLadderGame:
 
         self.bull = Turtle()
         self.cow = Turtle()
+
+        if not self.debug:
+            self.bull.up()
+            self.cow.up()
+
         self.bull.goto([15, 15])
         self.bull.shape("./images/bull.gif")
 
@@ -99,6 +110,9 @@ class SnakesLadderGame:
         self.screen.addshape("./images/snake3.gif")
 
         snakeLadderTurtle = Turtle()
+
+        if not self.debug:
+            snakeLadderTurtle.up()
 
         snakeArray = []
         ladderArray = []
@@ -137,6 +151,10 @@ class SnakesLadderGame:
 
             self.snakeArray = snakeArray
             self.ladderArray = ladderArray
+
+        if self.debug:
+            print("Snake Array:", snakeArray)
+            print("Ladder Array:", ladderArray)
 
     def initDice(self):
         """Initializes the turtle containing the dice"""
