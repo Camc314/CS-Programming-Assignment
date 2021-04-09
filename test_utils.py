@@ -1,5 +1,5 @@
 import unittest
-from utils import BoardUtils
+from utils import BoardUtils, getMidpoint
 
 
 class TestGetPointFromCoordinate(unittest.TestCase):
