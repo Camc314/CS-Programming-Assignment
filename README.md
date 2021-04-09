@@ -24,3 +24,19 @@ Python Version > 3.9
 ```
 
 This program may work on versions of Python earlier than 3.9, but has not been tested on them. If using on prior Python versions proceed with caution.
+
+## Other
+
+### To run the program with debug mode enabled:
+
+```sh
+$ python3 main.py --debug
+```
+
+This mode has increased logging.
+
+### To run the tests
+
+```sh
+$ python3 test_utils.py
+```
