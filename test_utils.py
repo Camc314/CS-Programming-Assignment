@@ -4,6 +4,7 @@ from utils import BoardUtils, getMidpoint
 
 class TestGetPointFromCoordinate(unittest.TestCase):
     def test_case_1(self):
+        """Tests get getPointFromCoordinates with a board size of 8x8"""
         util = BoardUtils(8, 8, 100, 100)
         self.assertEqual(util.getPointFromCoordinates([0, 0]), 1)
         self.assertEqual(util.getPointFromCoordinates([1, 0]), 2)
@@ -32,6 +33,7 @@ class TestGetPointFromCoordinate(unittest.TestCase):
         self.assertEqual(util.getPointFromCoordinates([7, 3]), 25)
 
     def test_case_2(self):
+        """Tests get getPointFromCoordinates with a board size of 5x5"""
         util = BoardUtils(5, 5, 100, 100)
         self.assertEqual(util.getPointFromCoordinates([0, 0]), 1)
         self.assertEqual(util.getPointFromCoordinates([1, 0]), 2)
@@ -60,6 +62,7 @@ class TestGetPointFromCoordinate(unittest.TestCase):
         self.assertEqual(util.getPointFromCoordinates([4, 4]), 25)
 
     def test_case_2(self):
+        """Tests get getPointFromCoordinates with a board size of 6x5"""
         util = BoardUtils(6, 5, 100, 100)
         self.assertEqual(util.getPointFromCoordinates([0, 0]), 1)
         self.assertEqual(util.getPointFromCoordinates([1, 0]), 2)
@@ -88,7 +91,10 @@ class TestGetPointFromCoordinate(unittest.TestCase):
 
 
 class TestGetCoordinates(unittest.TestCase):
+    """Tests Get coordinates function"""
+
     def test_case_1(self):
+        """Tests get coordinates with a board size of 5x5"""
         util = BoardUtils(5, 5, 100, 100)
 
         self.assertEqual(util.getCoordinates(1), (0, 0))
@@ -118,6 +124,7 @@ class TestGetCoordinates(unittest.TestCase):
         self.assertEqual(util.getCoordinates(25), (4, 4))
 
     def test_case_2(self):
+        """Tests get coordinates with a board size of 4x4"""
         util = BoardUtils(4, 4, 100, 100)
 
         self.assertEqual(util.getCoordinates(1), (0, 0))
@@ -138,6 +145,7 @@ class TestGetCoordinates(unittest.TestCase):
         self.assertEqual(util.getCoordinates(16), (0, 3))
 
     def test_case_3(self):
+        """Tests get coordinates with a board size of 7x4"""
         util = BoardUtils(7, 4, 100, 100)
         self.assertEqual(util.getCoordinates(1), (0, 0))
         self.assertEqual(util.getCoordinates(2), (1, 0))
@@ -171,6 +179,7 @@ class TestGetCoordinates(unittest.TestCase):
 
 class TestGetMidpoint(unittest.TestCase):
     def test_case_1(self):
+        """Tests get midpoint"""
         self.assertEqual(getMidpoint((0, 0), (2, 2)), (1, 1))
         self.assertEqual(getMidpoint((0, 0), (4, 4)), (2, 2))
         self.assertEqual(getMidpoint((1, 1), (3, 3)), (2, 2))
