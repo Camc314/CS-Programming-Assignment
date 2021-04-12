@@ -37,6 +37,8 @@ class SnakesLadderGame:
         self.currentTurn = "bull"
         self.bullScore = 1
         self.cowScore = 1
+        self.bullGamesWon = 0
+        self.cowGamesWon = 0
 
         self.initGrid()
         self.numberGrid()
@@ -61,7 +63,8 @@ class SnakesLadderGame:
             turtle.penup()
             turtle.goto([0, (i * (self.gridHeight / self.numRows))])
             turtle.pendown()
-            turtle.goto([self.gridWidth, (i * (self.gridHeight / self.numRows))])
+            turtle.goto(
+                [self.gridWidth, (i * (self.gridHeight / self.numRows))])
 
         turtle.setheading(0)
 
@@ -69,7 +72,8 @@ class SnakesLadderGame:
             turtle.penup()
             turtle.goto([(i * (self.gridWidth / self.numCols)), 0])
             turtle.pendown()
-            turtle.goto([(i * (self.gridWidth / self.numCols)), self.gridHeight])
+            turtle.goto(
+                [(i * (self.gridWidth / self.numCols)), self.gridHeight])
 
     def numberGrid(self):
         """Labels numbers for all squares on the grid"""
@@ -160,7 +164,8 @@ class SnakesLadderGame:
 
             snakeLadderTurtle.goto(
                 self.utils.cellMidpoint(
-                    self.utils.getPixelCoordinates(getMidpoint([x1, y1], [x2, y2]))
+                    self.utils.getPixelCoordinates(
+                        getMidpoint([x1, y1], [x2, y2]))
                 )
             )
             snakeLadderTurtle.stamp()
@@ -207,6 +212,13 @@ class SnakesLadderGame:
         if self.currentTurn == "bull":
             return self.bull
         return self.cow
+
+    def updateCurrentPlayerGamesWon(self):
+        """Increases the number of games won by the current player by 1"""
+        if self.currentTurn == "bull":
+            self.bullGamesWon += 1
+        else:
+            self.cowGamesWon += 1
 
     def getCurrentPlayerPosition(self) -> int:
         """Gets the score of the current player"""
@@ -279,7 +291,8 @@ class SnakesLadderGame:
                 newPosition,
             )
 
-            self.moveCurrentPlayer(self.getCurrentPlayerPosition(), newPosition)
+            self.moveCurrentPlayer(
+                self.getCurrentPlayerPosition(), newPosition)
             self.setCurrentPlayerPosition(newPosition)
             # Check for snake or ladder
             self.checkForLadder()
@@ -288,6 +301,8 @@ class SnakesLadderGame:
             if self.getCurrentPlayerPosition() == self.maxScore:
                 print(self.currentTurn.capitalize(), "Won!")
                 self.winTurtle.showturtle()
+                self.updateCurrentPlayerGamesWon()
+                self.outputWinStats()
                 return "game-complete"
 
         self.updateCurrentPlayer()
@@ -335,6 +350,11 @@ class SnakesLadderGame:
             self.currentTurn = "cow"
         else:
             self.currentTurn = "bull"
+
+    def outputWinStats(self):
+        """Outputs both players, and the number of games they have won"""
+        print("Bull has won", self.bullGamesWon, "games!")
+        print("Cow has won", self.cowGamesWon, "games!")
 
     def resetGame(self):
         """Moves all players back to the starting square, resets the score, and hides win picture"""
