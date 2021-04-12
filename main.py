@@ -7,6 +7,14 @@ from sys import argv
 
 class SnakesLadderGame:
     def __init__(self, numCols: int, numRows: int, difficulty: str, darkMode: bool):
+        """Initializes the class:
+
+        Arguments:
+        numCols -- the number of cols of the board
+        numRows -- the number of rows of the board
+        difficulty -- easy/medium/hard/impossible the difficulty of the game
+        darkMode -- if the user wants to play in dark mode
+        """
         self.difficulty = difficulty
         self.darkMode = darkMode
 
@@ -38,7 +46,7 @@ class SnakesLadderGame:
         self.initDice()
 
     def initGrid(self):
-        """Create a grid"""
+        """Create a grid with the number of rows specified in init"""
         self.screen = Screen()
         self.screen.setworldcoordinates(-100, -100, 400, 400)
         turtle = Turtle()
@@ -53,8 +61,7 @@ class SnakesLadderGame:
             turtle.penup()
             turtle.goto([0, (i * (self.gridHeight / self.numRows))])
             turtle.pendown()
-            turtle.goto(
-                [self.gridWidth, (i * (self.gridHeight / self.numRows))])
+            turtle.goto([self.gridWidth, (i * (self.gridHeight / self.numRows))])
 
         turtle.setheading(0)
 
@@ -62,8 +69,7 @@ class SnakesLadderGame:
             turtle.penup()
             turtle.goto([(i * (self.gridWidth / self.numCols)), 0])
             turtle.pendown()
-            turtle.goto(
-                [(i * (self.gridWidth / self.numCols)), self.gridHeight])
+            turtle.goto([(i * (self.gridWidth / self.numCols)), self.gridHeight])
 
     def numberGrid(self):
         """Labels numbers for all squares on the grid"""
@@ -101,7 +107,7 @@ class SnakesLadderGame:
         self.cow.shape("./images/cow.gif")
 
     def initSnakeLadder(self):
-        """"""
+        """Randomly places snakes and ladders on the screen."""
 
         self.screen.addshape("./images/ladder.gif")
         self.screen.addshape("./images/ladder3.gif")
@@ -128,25 +134,35 @@ class SnakesLadderGame:
 
             if isSnake:
                 height = randint(1, 3)
-                x1, y1 = i,  randint(height, self.numRows - 1)
-                x2, y2 = i,  y1 - height
-                snakeArray.append([self.utils.getPointFromCoordinates(
-                    [x1, y1]), self.utils.getPointFromCoordinates([x2, y2])])
+                x1, y1 = i, randint(height, self.numRows - 1)
+                x2, y2 = i, y1 - height
+                snakeArray.append(
+                    [
+                        self.utils.getPointFromCoordinates([x1, y1]),
+                        self.utils.getPointFromCoordinates([x2, y2]),
+                    ]
+                )
             else:
                 height = randint(1, 2)
-                x1, y1 = i,  randint(0, self.numRows - 1 - height)
-                x2, y2 = i,  y1 + height
-                ladderArray.append([self.utils.getPointFromCoordinates(
-                    [x1, y1]), self.utils.getPointFromCoordinates([x2, y2])])
+                x1, y1 = i, randint(0, self.numRows - 1 - height)
+                x2, y2 = i, y1 + height
+                ladderArray.append(
+                    [
+                        self.utils.getPointFromCoordinates([x1, y1]),
+                        self.utils.getPointFromCoordinates([x2, y2]),
+                    ]
+                )
 
             if isSnake:
                 snakeLadderTurtle.shape(snakeDict[abs(y2 - y1)])
             else:
                 snakeLadderTurtle.shape(ladderDict[abs(y2 - y1)])
 
-            snakeLadderTurtle.goto(self.utils.cellMidpoint(
-                self.utils.getPixelCoordinates(
-                    getMidpoint([x1, y1], [x2, y2]))))
+            snakeLadderTurtle.goto(
+                self.utils.cellMidpoint(
+                    self.utils.getPixelCoordinates(getMidpoint([x1, y1], [x2, y2]))
+                )
+            )
             snakeLadderTurtle.stamp()
 
             self.snakeArray = snakeArray
@@ -193,6 +209,7 @@ class SnakesLadderGame:
         return self.cow
 
     def getCurrentPlayerPosition(self) -> int:
+        """Gets the score of the current player"""
         if self.currentTurn == "bull":
             return self.bullScore
         return self.cowScore
@@ -229,6 +246,7 @@ class SnakesLadderGame:
         playerToMove.goto(x, y + 15)
 
     def rollDice(self):
+        """Rolls the dice of the current player and handles associated result"""
         userInput = input(
             self.currentTurn.capitalize() + "'s turn. Press enter to roll the dice "
         )
@@ -261,8 +279,7 @@ class SnakesLadderGame:
                 newPosition,
             )
 
-            self.moveCurrentPlayer(
-                self.getCurrentPlayerPosition(), newPosition)
+            self.moveCurrentPlayer(self.getCurrentPlayerPosition(), newPosition)
             self.setCurrentPlayerPosition(newPosition)
             # Check for snake or ladder
             self.checkForLadder()
@@ -284,8 +301,14 @@ class SnakesLadderGame:
             if x[0] == self.getCurrentPlayerPosition():
                 self.moveCurrentPlayerDirect(x[1])
                 self.setCurrentPlayerPosition(x[1])
-                print("Unlucky!,", self.currentTurn, "moved from",
-                      str(x[0]), "to", str(x[1]))
+                print(
+                    "Unlucky!,",
+                    self.currentTurn,
+                    "moved from",
+                    str(x[0]),
+                    "to",
+                    str(x[1]),
+                )
                 break
 
     def checkForLadder(self):
@@ -296,17 +319,25 @@ class SnakesLadderGame:
             if x[0] == self.getCurrentPlayerPosition():
                 self.moveCurrentPlayerDirect(x[1])
                 self.setCurrentPlayerPosition(x[1])
-                print("Lucky!,", self.currentTurn, "moved from",
-                      str(x[0]), "to", str(x[1]))
+                print(
+                    "Lucky!,",
+                    self.currentTurn,
+                    "moved from",
+                    str(x[0]),
+                    "to",
+                    str(x[1]),
+                )
                 break
 
     def updateCurrentPlayer(self):
+        """Toggles between the two players"""
         if self.currentTurn == "bull":
             self.currentTurn = "cow"
         else:
             self.currentTurn = "bull"
 
     def resetGame(self):
+        """Moves all players back to the starting square, resets the score, and hides win picture"""
         self.bullScore = 1
         self.cowScore = 1
 
@@ -325,20 +356,20 @@ print(
     "This game has been designed for a 5x5 grid, but different sized grids should work."
 )
 
-differentSize = input("Do you want a different sized grid? ")
+differentSize = input("Do you want a different sized grid? ").lower()
 
 gridCols, gridRows = 5, 5
 
-if differentSize.lower() == "yes":
+if differentSize == "yes":
     gridCols = int(input("How many columns do you want? "))
     gridRows = int(input("How many rows do you want? "))
 
 print("Select your difficulty (easy, medium, difficult or impossible)")
-difficulty = input("")
+difficulty = input("").lower()
 
 print("Do you want to play in dark mode?")
-darkMode = input("")
-if darkMode.lower() == "yes":
+darkMode = input("").lower()
+if darkMode == "yes":
     darkMode = True
 else:
     darkMode = False
