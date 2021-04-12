@@ -41,6 +41,14 @@ This mode has increased logging.
 $ python3 test_utils.py
 ```
 
-### Limitations of this program
+### Limitations
 
 This program contains a customizable board size, however, due to the limitations of the Turtle module, the Snakes/Ladders sizes cannot be adjusted, this means that on some board sizes, the snake and ladders will not appear to be going to the correct locations. One possible resolution to this problem is to use a module to resize the Gifs as they are imported into the screen, however since no external libraries are allowed, this is not possible
+
+### Features
+
+- Fully adjustable board size
+- Dark mode
+- Debug mode
+- Randomly placed snakes and ladders
+- Restart game
