@@ -50,7 +50,9 @@ class SnakesLadderGame:
     def initGrid(self):
         """Create a grid with the number of rows specified in init"""
         self.screen = Screen()
+        self.screen.title("Snakes and ladders")
         self.screen.setworldcoordinates(-100, -100, 400, 400)
+
         turtle = Turtle()
         turtle.speed(10)
 
