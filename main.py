@@ -142,6 +142,16 @@ class SnakesLadderGame:
                 height = randint(1, 3)
                 x1, y1 = i, randint(height, self.numRows - 1)
                 x2, y2 = i, y1 - height
+
+                # There is a small change that a snake may be placed starting at the finishing square
+                # If this happens, we can move the starting point down by 1
+                if (self.numRows % 2 == 1 and x1 == self.numCols - 1 and y1 == self.numRows - 1) or (self.numRows % 2 == 0 and x1 == 0 and y1 == self.numRows - 1):
+                    y1 = y1 - 1
+                    # If the generated height is 1, then at this point, y2 will equal y1, and there
+                    # are no snakes of heigh 0, to fix, we reduce the height of y2 by 1
+                    if y1 == y2:
+                        y2 = y2 - 1
+
                 snakeArray.append(
                     [
                         self.utils.getPointFromCoordinates([x1, y1]),
@@ -375,7 +385,7 @@ class SnakesLadderGame:
 
 
 print(
-    "This game has been designed for a 5x5 grid, but different sized grids should work."
+    "This game has been designed for a 5x5 grid, but different sized grids should work. Note the mininum grid height is 4"
 )
 
 differentSize = input("Do you want a different sized grid? ").lower()
