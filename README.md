@@ -54,3 +54,23 @@ This program contains a customizable board size, however, due to the limitations
 - Restart game
 - Track the number of wins or losses for each player
 - Impossible gamemode
+
+**Dark Mode 🌙**
+
+Strained eyes? Play in dark mode and reduce the strain!
+
+**Debug Mode 👨‍💻**
+
+To use the debug mode simply run the program with the `--debug` flag. This mode shows traces for turtle pens, as well as outputing data such as the location of snakes and ladders
+
+```sh
+$ python3 main.py --debug
+```
+
+**Randomly placed snakes and ladders 🎲**
+
+Every time the game is played, the location of the snakes and ladders are randomly generated based on the difficulty and board size to make the game more interesting and exciting to play
+
+**Impossible gamemode**
+
+Normal mode too... normal? Play the impossible mode, which is... impossible to win!
