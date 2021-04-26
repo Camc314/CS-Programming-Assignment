@@ -12,6 +12,9 @@ class BoardUtils:
         numRows -- number of rows on the board
         gridWidth -- width of the board in px
         gridHeight -- height of the board in px
+
+        Example:
+        >>> BoardUtils(5, 5, 500, 500) # A board with 5 cols, 5 rows, 500px wide, and 500px high
         """
         self.numCols = numCols
         self.numRows = numRows
@@ -20,6 +23,7 @@ class BoardUtils:
 
     def getCoordinates(self, squareNumber: int):
         """Gets the correct coordinate for a square on a grid
+
         Example:
         >>> getCoordinates(12) # 5 rows, 5 cols
         2, 2
@@ -33,17 +37,32 @@ class BoardUtils:
         return x, y
 
     def getPixelCoordinates(self, coordinate) -> (int, int):
-        """Returns the coordinate of the square in pixels, given a starting coordinate"""
+        """Returns the coordinate of the square in pixels, given a starting coordinate
+
+        Example:
+        >>> getPixelCoordinates([1, 2]) 5 rows, 5 cols, 500px wide, 500px high
+        100, 200
+        """
         x = coordinate[0] * self.gridWidth / self.numCols
         y = coordinate[1] * self.gridHeight / self.numRows
         return x, y
 
     def getPixelCoordFromSquare(self, squareNumber: int) -> (int, int):
-        """Returns the coordinate of the square in pixels given a starting square"""
+        """Returns the coordinate of the square in pixels given a starting square
+
+        Example:
+        >>> getPixelCoordFromSquare(8) 5 rows, 5 cols, 500px wide, 500px high
+        100, 200
+        """
         return self.getPixelCoordinates(self.getCoordinates(squareNumber))
 
     def getPointFromCoordinates(self, coordinate: (int, int)) -> int:
-        """Returns the square number from the input coordinates"""
+        """Returns the square number from the input coordinates
+
+        Example:
+        >>> getPixelCoordFromSquare(1, 2) 5 rows, 5 cols
+        8
+        """
         score = coordinate[1] * self.numCols
 
         if coordinate[1] % 2 == 0:
@@ -57,7 +76,7 @@ class BoardUtils:
         """Gets the center of a cell
 
         Example: (for a cell size of 100x100)
-        >>> cellMidpoint(100,100)
+        >>> cellMidpoint(100, 100)
         150, 150
         """
         x, y = coordinate
@@ -103,7 +122,7 @@ def getMidpoint(pointA: (int, int), pointB: (int, int)) -> (int, int):
     """Gets the midpoint between two coordinates
 
     Example:
-    >>> getMidpoint([1,2],[3,4])
+    >>> getMidpoint([1, 2],[3, 4])
     2, 3
     """
     x = (pointA[0] + pointB[0]) / 2

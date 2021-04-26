@@ -12,8 +12,11 @@ class SnakesLadderGame:
         Arguments:
         numCols -- the number of cols of the board
         numRows -- the number of rows of the board
-        difficulty -- easy/medium/hard/impossible the difficulty of the game
+        difficulty -- normal/impossible the difficulty of the game
         darkMode -- if the user wants to play in dark mode
+
+        Example:
+        >>> SnakesLadderGame(5, 5 ,"normal", false) # 5 cols, 5 rows, normal difficulty, and a dark mode
         """
         self.difficulty = difficulty
         self.darkMode = darkMode
@@ -54,7 +57,7 @@ class SnakesLadderGame:
         self.screen.setworldcoordinates(-100, -100, 400, 400)
 
         turtle = Turtle()
-        turtle.speed(10)
+        turtle.speed(0)
 
         if self.darkMode:
             self.screen.bgcolor("black")
@@ -133,7 +136,7 @@ class SnakesLadderGame:
             # to change difficulty change this probability
             isSnake = randint(1, 2) == 2
 
-            if len(ladderArray) > 2 * len(snakeArray):
+            if len(ladderArray) > 2 * len(snakeArray) or self.difficulty == "impossible":
                 isSnake = True
             elif len(snakeArray) > 2 * len(ladderArray):
                 isSnake = False
@@ -269,6 +272,28 @@ class SnakesLadderGame:
 
         playerToMove.goto(x, y + 15)
 
+    def handleImpossibleDiceRoll(self, randomNumber: int):
+        """Makes sure that the player cannot win the game,
+        by placing them on a snake if they are going to go past the last snake
+
+        **Only used when difficulty is set to impossible**
+
+        Example:
+        >>> handleImpossibleDiceRoll(5) # 5x5 grid, snake 23, player at 20
+        3 # rolling a 3 ensures that they land on a snake and go backwards, preventing them from finishing
+        """
+        newPosition = randomNumber + self.getCurrentPlayerPosition()
+
+        finalSnakeScore = 0
+
+        for snake in self.snakeArray:
+            if snake[0] > finalSnakeScore:
+                finalSnakeScore = snake[0]
+            if newPosition < snake[0]:
+                return randomNumber
+
+        return finalSnakeScore - self.getCurrentPlayerPosition()
+
     def rollDice(self):
         """Rolls the dice of the current player and handles associated result"""
         userInput = input(
@@ -280,6 +305,9 @@ class SnakesLadderGame:
         self.animateDiceRoll()
 
         diceRollScore = rollDie()
+
+        if self.difficulty == "impossible":
+            diceRollScore = self.handleImpossibleDiceRoll(diceRollScore)
 
         self.updateDiceTurtle(diceRollScore)
 
@@ -384,37 +412,42 @@ class SnakesLadderGame:
         self.currentTurn = "bull"
 
 
-print(
-    "This game has been designed for a 5x5 grid, but different sized grids should work. Note the mininum grid height is 4"
-)
+def main():
+    print(
+        "This game has been designed for a 5x5 grid, but different sized grids should work. Note the mininum grid height is 4"
+    )
 
-differentSize = input("Do you want a different sized grid? ").lower()
+    differentSize = input("Do you want a different sized grid? ").lower()
 
-gridCols, gridRows = 5, 5
+    gridCols, gridRows = 5, 5
 
-if differentSize == "yes":
-    gridCols = int(input("How many columns do you want? "))
-    gridRows = int(input("How many rows do you want? "))
+    if differentSize == "yes":
+        gridCols = int(input("How many columns do you want? "))
+        gridRows = int(input("How many rows do you want? "))
 
-print("Select your difficulty (easy, medium, difficult or impossible)")
-difficulty = input("").lower()
+    print("Select your difficulty (normal or impossible)")
+    difficulty = input("").lower()
 
-print("Do you want to play in dark mode?")
-darkMode = input("").lower()
-if darkMode == "yes":
-    darkMode = True
-else:
-    darkMode = False
+    print("Do you want to play in dark mode?")
+    darkMode = input("").lower()
+    if darkMode == "yes":
+        darkMode = True
+    else:
+        darkMode = False
 
-game = SnakesLadderGame(gridCols, gridRows, difficulty, darkMode)
+    game = SnakesLadderGame(gridCols, gridRows, difficulty, darkMode)
 
-while True:
-    res = game.rollDice()
-    if res == "game-quit":
-        break
-    elif res == "game-complete":
-        playAgain = input("Play again?")
-        if playAgain.lower() == "no":
+    while True:
+        res = game.rollDice()
+        if res == "game-quit":
             break
-        else:
-            game.resetGame()
+        elif res == "game-complete":
+            playAgain = input("Play again?")
+            if playAgain.lower() == "no":
+                break
+            else:
+                game.resetGame()
+
+
+if __name__ == "__main__":
+    main()

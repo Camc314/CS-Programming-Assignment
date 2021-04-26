@@ -53,3 +53,4 @@ This program contains a customizable board size, however, due to the limitations
 - Randomly placed snakes and ladders
 - Restart game
 - Track the number of wins or losses for each player
+- Impossible gamemode
